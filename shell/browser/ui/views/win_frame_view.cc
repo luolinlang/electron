@@ -168,10 +168,6 @@ bool WinFrameView::IsMaximized() const {
   return frame()->IsMaximized();
 }
 
-bool WinFrameView::ShouldCustomDrawSystemTitlebar() const {
-  return window()->IsWindowControlsOverlayEnabled();
-}
-
 void WinFrameView::Layout(PassKey) {
   LayoutCaptionButtons();
   if (window()->IsWindowControlsOverlayEnabled()) {

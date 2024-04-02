@@ -215,6 +215,7 @@ NativeWindowViews::NativeWindowViews(const gin_helper::Dictionary& options,
   options.Get("thickFrame", &thick_frame_);
   if (transparent())
     thick_frame_ = false;
+#endif
 
   overlay_button_color_ = color_utils::GetSysSkColor(COLOR_BTNFACE);
   overlay_symbol_color_ = color_utils::GetSysSkColor(COLOR_BTNTEXT);
@@ -246,6 +247,7 @@ NativeWindowViews::NativeWindowViews(const gin_helper::Dictionary& options,
   if (title_bar_style_ != TitleBarStyle::kNormal)
     set_has_frame(false);
 
+#if BUILDFLAG(IS_WIN)
   // If the taskbar is re-created after we start up, we have to rebuild all of
   // our buttons.
   taskbar_created_message_ = RegisterWindowMessage(TEXT("TaskbarCreated"));
@@ -1689,7 +1691,7 @@ NativeWindowViews::CreateNonClientFrameView(views::Widget* widget) {
   } else {
     auto frame_view = has_frame() && has_client_frame()
                           ? std::make_unique<ClientFrameViewLinux>()
-                          : std::make_unique<FramelessView>();
+                          : std::make_unique<OpaqueFrameView>();
     frame_view->Init(this, widget);
     return frame_view;
   }
